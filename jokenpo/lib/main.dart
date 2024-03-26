@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.amber,
       ),
       home: const MyHomePage(title: 'Jokenpo'),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

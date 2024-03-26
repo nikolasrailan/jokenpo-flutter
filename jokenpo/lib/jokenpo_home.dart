@@ -14,6 +14,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   var _imgApp = Image.asset('assets/images/padrao.png');
   String _mensagem = 'Escolha do App!';
+  int numVitorias = 0;
+  int numDerrotas = 0;
+  int numEmpates = 0;
 
   void _joga(String opcaoJogador) {
     final lista_opcao = ['pedra', 'papel', 'tesoura'];
@@ -32,13 +35,26 @@ class _MyHomePageState extends State<MyHomePage> {
         opcaoJogador == 'papel' && opcaoApp == 'tesoura' ||
         opcaoJogador == 'tesoura' && opcaoApp == 'pedra') {
       mensagem = 'Você Perdeu!!!';
+      numDerrotas++;
     } else if (opcaoApp == opcaoJogador) {
       mensagem = 'Empate!!!';
+      numEmpates++;
     } else {
       mensagem = 'Você Venceu!!!';
+      numVitorias++;
     }
 
     return mensagem;
+  }
+
+  void _reset() {
+    setState(() {
+      numDerrotas = 0;
+      numVitorias = 0;
+      numEmpates = 0;
+      _imgApp = Image.asset('assets/images/padrao.png');
+      _mensagem = "Quem ganhou";
+    });
   }
 
   @override
@@ -70,9 +86,24 @@ class _MyHomePageState extends State<MyHomePage> {
                 choisePlayerDetector('papel'),
                 choisePlayerDetector('tesoura'),
               ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  counterCircle('Vitoria', "$numVitorias"),
+                  counterCircle('Derrota', "$numDerrotas"),
+                  counterCircle('Empate', "$numEmpates"),
+                ],
+              ),
             )
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _reset,
+        child: const Icon(Icons.settings_backup_restore),
       ),
     );
   }
@@ -87,6 +118,36 @@ class _MyHomePageState extends State<MyHomePage> {
     return Text(
       text,
       style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+    );
+  }
+
+  SizedBox counterCircle(String textTop, String textBot) {
+    return SizedBox(
+      height: 90,
+      width: 90,
+      child: ClipOval(
+        child: Material(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                textTop,
+                style:
+                    const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 5),
+              Text(
+                textBot,
+                style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              )
+            ],
+          ),
+          color: Colors.amberAccent,
+        ),
+      ),
     );
   }
 }
